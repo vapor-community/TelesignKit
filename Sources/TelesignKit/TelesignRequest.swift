@@ -92,7 +92,7 @@ public class TelesignAPIRequest: TelesignRequest {
         let headers = generateHeaders(path: path, method: method, body: body, apiKey: apiKey, customerId: customerId)
         
         do {
-            let request = try HTTPClient.Request(url: "\(path)", method: method, headers: headers, body: .string(body))
+            let request = try HTTPClient.Request(url: "\(uri)/\(path)", method: method, headers: headers, body: .string(body))
             
             return httpClient.execute(request: request).flatMap { response in
                 guard var byteBuffer = response.body else {
