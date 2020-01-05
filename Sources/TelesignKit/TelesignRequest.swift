@@ -77,11 +77,13 @@ public class TelesignAPIRequest: TelesignRequest {
     private let apiKey: String
     private let customerId: String
     private let httpClient: HTTPClient
+    private let eventLoop: EventLoop
     
-    init(apiKey: String, customerId: String, httpClient: HTTPClient) {
+    init(apiKey: String, customerId: String, httpClient: HTTPClient, eventLoop: EventLoop) {
         self.apiKey = apiKey
         self.customerId = customerId
         self.httpClient = httpClient
+        self.eventLoop = eventLoop
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
         decoder.dateDecodingStrategy = .formatted(formatter)
@@ -94,7 +96,7 @@ public class TelesignAPIRequest: TelesignRequest {
         do {
             let request = try HTTPClient.Request(url: "\(uri)/\(path)", method: method, headers: headers, body: .string(body))
             
-            return httpClient.execute(request: request).flatMap { response in
+            return httpClient.execute(request: request, eventLoop: .delegate(on: self.eventLoop)).flatMap { response in
                 guard var byteBuffer = response.body else {
                     fatalError("Response body from Telesign is missing! This should never happen.")
                 }
@@ -102,16 +104,16 @@ public class TelesignAPIRequest: TelesignRequest {
                 
                 do {
                     guard response.status == .ok else {
-                        return self.httpClient.eventLoopGroup.next().makeFailedFuture(try self.decoder.decode(TelesignError.self, from: responseData))
+                        return self.eventLoop.makeFailedFuture(try self.decoder.decode(TelesignError.self, from: responseData))
                     }
-                    return self.httpClient.eventLoopGroup.next().makeSucceededFuture(try self.decoder.decode(TM.self, from: responseData))
+                    return self.eventLoop.makeSucceededFuture(try self.decoder.decode(TM.self, from: responseData))
 
                 } catch {
-                    return self.httpClient.eventLoopGroup.next().makeFailedFuture(error)
+                    return self.eventLoop.makeFailedFuture(error)
                 }
             }
         } catch {
-             return httpClient.eventLoopGroup.next().makeFailedFuture(error)
+            return self.eventLoop.makeFailedFuture(error)
         }
     }
 }

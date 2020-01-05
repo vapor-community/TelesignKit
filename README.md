@@ -13,7 +13,7 @@
 To start using TelesignKit, in your `Package.swift`, add the following
 
 ~~~~swift
-.package(url: "https://github.com/vapor-community/telesignkit.git", from: "1.0.0")
+.package(url: "https://github.com/vapor-community/telesignkit.git", from: "2.0.0")
 ~~~~
 
 ## Using the API
@@ -24,10 +24,10 @@ In your `main.swift` simply create a `TelesignClient`:
 import NIO
 import TelesignKit
 
-let eventloop: EventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: 1)
+let httpClient = HTTPClient(..)
 
-
-let client = TelesignClient(eventLoop: eventloop,
+let client = TelesignClient(httpClient: httpClient,
+                            eventLoop: eventloop,
                             apiKey: "YOUR_API_KEY",
                             customerId: "YOUR_CUSTOMER_ID")
 
@@ -38,6 +38,22 @@ do {
     print(result)
 } catch {
     print(error)
+}
+~~~
+
+## Vapor Integration
+To use TelesignKit with Vapor 4.x, add a simple extension on `Request`.
+~~~swift
+extension Request {
+    public var telesign: TelesignClient {
+    return TelesignClient(httpClient: self.application.client.http, eventLoop: self.eventLoop, apiKey: "TELESIGN_API_KEY", customerId: "CUSTOMER_ID")
+    }
+}
+
+// Later...
+
+func sendSMS(req: Request) -> EventLoopFuture<Response> {
+    return req.telesign.messaging.send(...)
 }
 ~~~
 
