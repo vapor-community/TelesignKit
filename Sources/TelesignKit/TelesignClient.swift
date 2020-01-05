@@ -9,24 +9,21 @@ import NIO
 import AsyncHTTPClient
 
 public final class TelesignClient {
-    private let client: HTTPClient
     public let messaging: MessageRoute
     public let score: ScoreRoute
     public let phone: PhoneRoute
     
-    public init(eventLoop: EventLoopGroup,
+    public init(httpClient: HTTPClient,
+                eventLoop: EventLoop,
                 apiKey: String,
                 customerId: String) {
-        client = HTTPClient(eventLoopGroupProvider: .shared(eventLoop))
+
         let telesignRequest = TelesignAPIRequest(apiKey: apiKey,
                                                  customerId: customerId,
-                                                 httpClient: client)
+                                                 httpClient: httpClient,
+                                                 eventLoop: eventLoop)
         messaging = Messaging(request: telesignRequest)
         score = Score(request: telesignRequest)
         phone = Phone(request: telesignRequest)
-    }
-    
-    deinit {
-        try? client.syncShutdown()
     }
 }
