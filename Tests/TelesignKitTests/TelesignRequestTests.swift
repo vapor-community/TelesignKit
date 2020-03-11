@@ -7,8 +7,6 @@
 
 import XCTest
 @testable import TelesignKit
-@testable import OpenCrypto
-@testable import NIOHTTP1
 
 class TelesignRequestTests: XCTestCase {
     struct MockTelesignRequest: TelesignRequest {}
