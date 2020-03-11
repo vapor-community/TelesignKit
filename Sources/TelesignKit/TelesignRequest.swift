@@ -11,7 +11,7 @@ import NIO
 import NIOFoundationCompat
 import NIOHTTP1
 import AsyncHTTPClient
-import OpenCrypto
+import Crypto
 
 public protocol TelesignRequest {
     func send<TM: TelesignModel>(method: HTTPMethod, path: String, body: String) -> EventLoopFuture<TM>

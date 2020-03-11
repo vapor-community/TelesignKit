@@ -1,6 +1,6 @@
 # TelesignKit
 
-![](https://img.shields.io/badge/Swift-5-lightgrey.svg?style=svg)
+![](https://img.shields.io/badge/Swift-5.2-lightgrey.svg?style=svg)
 ![](https://img.shields.io/badge/SwiftNio-2-lightgrey.svg?style=svg)
 
 
