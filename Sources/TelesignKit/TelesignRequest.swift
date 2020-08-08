@@ -77,7 +77,7 @@ public class TelesignAPIRequest: TelesignRequest {
     private let apiKey: String
     private let customerId: String
     private let httpClient: HTTPClient
-    private let eventLoop: EventLoop
+    var eventLoop: EventLoop
     
     init(apiKey: String, customerId: String, httpClient: HTTPClient, eventLoop: EventLoop) {
         self.apiKey = apiKey
