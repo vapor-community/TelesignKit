@@ -1,0 +1,19 @@
+name: 'Test'
+
+# Only run this for pull requests opened against master.
+on:
+  pull_request:
+    types: [opened]
+    branches:
+    - 'master'
+
+jobs:
+  test:
+    name: Running Tests
+    runs-on: ubuntu-latest
+              
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: 'Running Integration Tests'
+      run: swift test --enable-test-discovery

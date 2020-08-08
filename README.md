@@ -13,7 +13,7 @@
 To start using TelesignKit, in your `Package.swift`, add the following
 
 ~~~~swift
-.package(url: "https://github.com/vapor-community/telesignkit.git", from: "2.0.0")
+.package(url: "https://github.com/vapor-community/telesignkit.git", from: "3.0.0")
 ~~~~
 
 ## Using the API
