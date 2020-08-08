@@ -26,11 +26,7 @@ class TelesignRequestTests: XCTestCase {
                                           customerId: customerId)
         
         XCTAssertEqual(headers["authorization"].first, "TSA myCustomerId:v03YU8XGGRgHrUl8cCEVWKcQLRN/zNKd+PcW6bsRI3c=")
-        #if os(Linux)
-        XCTAssertEqual(headers["x-ts-date"].first, "Sat, 2 Nov 2019 02:41:35 UTC")
-        #else
         XCTAssertEqual(headers["x-ts-date"].first, "Sat, 2 Nov 2019 02:41:35 GMT")
-        #endif
         XCTAssertEqual(headers["x-ts-auth-method"].first, "HMAC-SHA256")
         XCTAssertEqual(headers["Content-Type"].first, "application/x-www-form-urlencoded")
     }
