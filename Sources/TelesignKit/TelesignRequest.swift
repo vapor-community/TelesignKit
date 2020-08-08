@@ -42,7 +42,7 @@ extension TelesignRequest {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "E, d MMM yyyy HH:mm:ss z"
-        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        formatter.timeZone = TimeZone(abbreviation: "GMT")
         
         let date = formatter.string(from: date)
         
